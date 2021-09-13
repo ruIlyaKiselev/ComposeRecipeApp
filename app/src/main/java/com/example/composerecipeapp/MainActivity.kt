@@ -1,8 +1,11 @@
 package com.example.composerecipeapp
 
+import android.app.AppComponentFactory
+import android.content.res.Resources
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -22,81 +25,28 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.composerecipeapp.ui.theme.ComposeRecipeAppTheme
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-        setContent {
-            Column (
-                modifier = Modifier
-                    .verticalScroll(ScrollState(0))
-                    .fillMaxSize()
-                    .background(Color.White)
-            ) {
-                Image(
-                    painterResource(id = R.drawable.happy_meal_small),
-                    contentDescription = "",
-                    modifier = Modifier.fillMaxWidth(),
-                    contentScale = ContentScale.Crop
-                )
-                Row (
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = "Happy Meal",
-                        color = Color.Red,
-                        fontSize = 42.sp,
-                        fontFamily = FontFamily.Cursive
-                    )
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.main_container, RecipeListFragment())
+            .commit()
 
-                    Text(
-                        text = "$5.99",
-                        color = Color.Green,
-                        fontSize = 24.sp,
-                        modifier = Modifier.align(Alignment.CenterVertically)
-                    )
-                }
-
-                Column (
-                    Modifier
-                        .padding(16.dp)
-                        .fillMaxSize(),
-                    verticalArrangement = Arrangement.SpaceBetween
-                ) {
-
-                    Text(
-                        text = "800 Calories",
-                        color = Color.Green,
-                        fontSize = 16.sp
-                    )
-
-                    Spacer(modifier = Modifier.padding(16.dp))
-                    
-                    Button(
-                        onClick = { /*TODO*/ },
-                        modifier = Modifier.align(Alignment.CenterHorizontally)
-                    ) {
-                        Text(text = "Order now!")
-                    }
-                }
-
-            }
-        }
     }
-}
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
+    @Composable
+    fun Greeting(name: String) {
+        Text(text = "Hello $name!")
+    }
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    ComposeRecipeAppTheme {
-        Greeting("Android")
+    @Preview(showBackground = true)
+    @Composable
+    fun DefaultPreview() {
+        ComposeRecipeAppTheme {
+            Greeting("Android")
+        }
     }
 }

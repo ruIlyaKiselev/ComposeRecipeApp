@@ -2,9 +2,12 @@ package com.example.composerecipeapp.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ProvideTextStyle
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 
 private val DarkColorPalette = darkColors(
     primary = Purple200,
@@ -42,6 +45,17 @@ fun ComposeRecipeAppTheme(
         colors = colors,
         typography = Typography,
         shapes = Shapes,
-        content = content
+        content = {
+            ProvideTextStyle(
+                value = TextStyle(
+                    color = if (darkTheme) {
+                        Color.White
+                    } else  {
+                        Color.Black
+                    }
+                ),
+                content = content
+            )
+        }
     )
 }

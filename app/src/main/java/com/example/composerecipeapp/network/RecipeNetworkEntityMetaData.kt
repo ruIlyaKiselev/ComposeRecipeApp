@@ -5,11 +5,11 @@ import com.google.gson.annotations.SerializedName
 
 data class RecipeNetworkEntityMetaData(
     @SerializedName("count")
-    val count: Int?,
+    var count: Int? = null,
     @SerializedName("next")
-    val next: String?,
+    var next: String? = null,
     @SerializedName("previous")
-    val previous: String?,
+    var previous: String? = null,
     @SerializedName("results")
-    val recipeNetworkEntityMetaData: List<RecipeNetworkEntity>?
+    var recipeNetworkEntityMetaData: List<RecipeNetworkEntity>? = listOf()
 )

@@ -5,25 +5,25 @@ import com.google.gson.annotations.SerializedName
 
 data class RecipeNetworkEntity(
     @SerializedName("pk")
-    val pk: Int?,
+    var pk: Int? = null,
     @SerializedName("title")
-    val title: String?,
+    var title: String? = null,
     @SerializedName("publisher")
-    val publisher: String?,
+    var publisher: String? = null,
     @SerializedName("rating")
-    val rating: Int?,
+    var rating: Int? = null,
     @SerializedName("source_url")
-    val sourceUrl: String?,
+    var sourceUrl: String? = null,
     @SerializedName("description")
-    val description: String?,
+    var description: String? = null,
     @SerializedName("cooking_instructions")
-    val cookingInstructions: String?,
+    var cookingInstructions: String? = null,
     @SerializedName("date_added")
-    val dateAdded: String?,
+    var dateAdded: String? = null,
     @SerializedName("date_updated")
-    val dateUpdated: String?,
+    var dateUpdated: String? = null,
     @SerializedName("ingredients")
-    val ingredients: List<String>?,
+    var ingredients: List<String>? = listOf(),
     @SerializedName("featured_image")
-    val featuredImage: String?,
+    var featuredImage: String? = null,
 )

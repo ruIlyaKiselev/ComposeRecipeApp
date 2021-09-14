@@ -35,4 +35,16 @@ class RecipeNetworkMapper: EntityMapper<RecipeNetworkEntity, Recipe> {
             dateUpdated = domainModel.dateUpdated
         )
     }
+
+    fun fromEntityList(initial: List<RecipeNetworkEntity>): List<Recipe> {
+        return initial.map {
+            mapFromEntity(it)
+        }
+    }
+
+    fun toEntityList(initial: List<Recipe>): List<RecipeNetworkEntity> {
+        return initial.map {
+            mapToEntity(it)
+        }
+    }
 }

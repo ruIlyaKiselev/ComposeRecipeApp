@@ -1,4 +1,4 @@
-package com.example.composerecipeapp.network
+package com.example.composerecipeapp.network.model
 
 import com.example.composerecipeapp.domain.model.Recipe
 import com.example.composerecipeapp.domain.util.EntityMapper

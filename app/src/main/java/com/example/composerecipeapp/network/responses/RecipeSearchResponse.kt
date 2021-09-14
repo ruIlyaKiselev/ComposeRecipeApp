@@ -1,9 +1,10 @@
-package com.example.composerecipeapp.network
+package com.example.composerecipeapp.network.responses
 
 
+import com.example.composerecipeapp.network.model.RecipeNetworkEntity
 import com.google.gson.annotations.SerializedName
 
-data class RecipeNetworkEntityMetaData(
+data class RecipeSearchResponse(
     @SerializedName("count")
     var count: Int? = null,
     @SerializedName("next")
@@ -11,5 +12,5 @@ data class RecipeNetworkEntityMetaData(
     @SerializedName("previous")
     var previous: String? = null,
     @SerializedName("results")
-    var recipeNetworkEntityMetaData: List<RecipeNetworkEntity>? = listOf()
+    var recipeNetworkEntityList: List<RecipeNetworkEntity>? = listOf()
 )

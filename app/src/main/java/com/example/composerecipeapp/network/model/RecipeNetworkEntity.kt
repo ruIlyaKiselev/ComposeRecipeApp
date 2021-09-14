@@ -1,4 +1,4 @@
-package com.example.composerecipeapp.network
+package com.example.composerecipeapp.network.model
 
 
 import com.google.gson.annotations.SerializedName

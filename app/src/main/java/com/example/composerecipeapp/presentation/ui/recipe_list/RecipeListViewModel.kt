@@ -1,32 +1,30 @@
 package com.example.composerecipeapp.presentation.ui.recipe_list
 
-import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.composerecipeapp.network.ApiContract
+import androidx.lifecycle.viewModelScope
+import com.example.composerecipeapp.domain.model.Recipe
 import com.example.composerecipeapp.repository.RecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
 
 @HiltViewModel
 class RecipeListViewModel @Inject constructor(
-    private val randomString: String,
     private val repository: RecipeRepository,
     @Named("auth_token") private val token: String
 ): ViewModel() {
 
-    init {
-        Log.d("MyLog", randomString)
+    private val mutableRecipes: MutableLiveData<List<Recipe>> = MutableLiveData()
+    val recipes: LiveData<List<Recipe>> get() = mutableRecipes
 
-        GlobalScope.launch {
-            Log.d("MyLog", repository.search(ApiContract.TOKEN, 1, "potato")[0].dateAdded!!)
+    init {
+        viewModelScope.launch(Dispatchers.IO) {
+             mutableRecipes.value = repository.search(token, 1, "potato")
         }
     }
-
-    fun getRepo() = repository
-    fun getRandomString() = randomString
-    fun  getToken() = token
 
 }

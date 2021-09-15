@@ -26,17 +26,15 @@ class RecipeListFragment: Fragment() {
 
     val viewModel: RecipeListViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d("MyLog", viewModel.getRandomString())
-        Log.d("MyLog", viewModel.getToken())
-        Log.d("MyLog", viewModel.getRepo().toString())
-    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        viewModel.recipes.observe(viewLifecycleOwner) {
+
+        }
 
         return ComposeView(requireContext()).apply {
             setContent {

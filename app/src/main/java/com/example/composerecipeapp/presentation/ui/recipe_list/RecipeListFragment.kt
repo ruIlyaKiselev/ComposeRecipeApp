@@ -32,12 +32,15 @@ class RecipeListFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        viewModel.recipes.observe(viewLifecycleOwner) {
-
-        }
-
         return ComposeView(requireContext()).apply {
             setContent {
+
+                val recipes = viewModel.recipes.value
+
+                recipes.forEach {
+                    Log.d("MyLog", it.toString())
+                }
+
                 Column(
                     modifier = Modifier
                         .padding(16.dp)

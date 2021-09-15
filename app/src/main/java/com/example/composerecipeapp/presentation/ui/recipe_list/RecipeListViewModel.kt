@@ -1,7 +1,7 @@
 package com.example.composerecipeapp.presentation.ui.recipe_list
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.composerecipeapp.domain.model.Recipe
@@ -18,12 +18,11 @@ class RecipeListViewModel @Inject constructor(
     @Named("auth_token") private val token: String
 ): ViewModel() {
 
-    private val mutableRecipes: MutableLiveData<List<Recipe>> = MutableLiveData()
-    val recipes: LiveData<List<Recipe>> get() = mutableRecipes
+    val recipes: MutableState<List<Recipe>> = mutableStateOf(listOf())
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-             mutableRecipes.value = repository.search(token, 1, "potato")
+             recipes.value = repository.search(token, 1, "potato")
         }
     }
 

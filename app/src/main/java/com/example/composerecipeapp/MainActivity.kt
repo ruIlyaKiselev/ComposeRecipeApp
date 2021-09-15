@@ -5,8 +5,8 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.composerecipeapp.domain.model.Recipe
 import com.example.composerecipeapp.network.RecipeService
-import com.example.composerecipeapp.network.model.RecipeNetworkEntity
-import com.example.composerecipeapp.network.model.RecipeNetworkMapper
+import com.example.composerecipeapp.network.model.RecipeDto
+import com.example.composerecipeapp.network.model.RecipeDtoMapper
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,10 +19,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val mapper = RecipeNetworkMapper()
+        val mapper = RecipeDtoMapper()
         val recipe = Recipe()
-        val networkEntity: RecipeNetworkEntity = mapper.mapToEntity(recipe)
-        var restoredRecipe: Recipe = mapper.mapFromEntity(networkEntity)
+        val dto: RecipeDto = mapper.mapFromDomainModel(recipe)
+        var restoredRecipe: Recipe = mapper.mapToDomainModel(dto)
 
         val service = Retrofit.Builder()
             .baseUrl("https://food2fork.ca/api/recipe/")
@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
                 "carrot"
             )
 
-            Log.d("MyLog", result.recipeNetworkEntityList.toString())
+            Log.d("MyLog", result.recipeDtoList.toString())
         }
     }
 }

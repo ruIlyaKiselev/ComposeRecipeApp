@@ -1,7 +1,7 @@
 package com.example.composerecipeapp.network.responses
 
 
-import com.example.composerecipeapp.network.model.RecipeNetworkEntity
+import com.example.composerecipeapp.network.model.RecipeDto
 import com.google.gson.annotations.SerializedName
 
 data class RecipeSearchResponse(
@@ -12,5 +12,5 @@ data class RecipeSearchResponse(
     @SerializedName("previous")
     var previous: String? = null,
     @SerializedName("results")
-    var recipeNetworkEntityList: List<RecipeNetworkEntity>? = listOf()
+    var recipeDtoList: List<RecipeDto>? = listOf()
 )

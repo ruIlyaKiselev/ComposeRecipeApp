@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.ui.Modifier
@@ -19,6 +21,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.example.composerecipeapp.R
+import com.example.composerecipeapp.domain.model.Recipe
+import com.example.composerecipeapp.presentation.components.RecipeCard
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,32 +40,15 @@ class RecipeListFragment: Fragment() {
             setContent {
 
                 val recipes = viewModel.recipes.value
-
-                recipes.forEach {
-                    Log.d("MyLog", it.toString())
-                }
-
-                Column(
-                    modifier = Modifier
-                        .padding(16.dp)
-                ) {
-
-                    Text(
-                        text = "Recipe List",
-                        color = Color.Red,
-                        fontSize = 26.sp
-                    )
-
-                    Spacer(modifier = Modifier.padding(16.dp))
-
-                    Button(
-                        onClick = {
-                            findNavController().navigate(R.id.viewRecipe)
-                        }
-                    ) {
-                        Text(text = "To Recipe Fragment!")
+    
+                LazyColumn {
+                    itemsIndexed(
+                        items = recipes
+                    ) { i: Int, recipe: Recipe ->
+                        RecipeCard(recipe = recipe, onClick = {})
                     }
                 }
+
             }
         }
     }

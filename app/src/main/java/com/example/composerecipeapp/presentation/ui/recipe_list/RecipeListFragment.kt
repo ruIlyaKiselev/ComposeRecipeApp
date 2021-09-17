@@ -13,11 +13,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
@@ -32,6 +34,7 @@ import com.example.composerecipeapp.presentation.components.RecipeCard
 import com.example.composerecipeapp.presentation.components.foodCategoryChip
 import com.example.composerecipeapp.ui.theme.ComposeRecipeAppTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class RecipeListFragment: Fragment() {
@@ -45,7 +48,7 @@ class RecipeListFragment: Fragment() {
     ): View {
 
         viewModel.newSearch()
-        
+
         return ComposeView(requireContext()).apply {
             setContent {
 
@@ -105,15 +108,21 @@ class RecipeListFragment: Fragment() {
                                         )
                                     }
 
+                                    val scrollState = rememberScrollState()
+                                    val coroutineScope = rememberCoroutineScope()
+
                                     Row(
                                         modifier = Modifier
                                             .horizontalScroll(
                                                 enabled = true,
-                                                state = ScrollState(0)
+                                                state = scrollState,
                                             )
                                             .fillMaxWidth()
-                                            .padding(start = 8.dp)
+                                            .padding(start = 8.dp),
                                     ) {
+                                        coroutineScope.launch {
+                                            scrollState.scrollTo(viewModel.categoryScrollPosition)
+                                        }
                                         getAllFoodCategories().forEach { foodCategory ->
                                             foodCategoryChip(
                                                 category = foodCategory.value,
@@ -121,6 +130,9 @@ class RecipeListFragment: Fragment() {
                                                 onSelectedCategoryChanged = {
                                                     viewModel.onSelectedCategoryChanged(
                                                         foodCategory.value
+                                                    )
+                                                    viewModel.onChangeCategoryScrollPosition(
+                                                        scrollState.value
                                                     )
                                                 },
                                                 onExecuteSearch = {

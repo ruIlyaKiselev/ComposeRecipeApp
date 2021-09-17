@@ -23,6 +23,8 @@ class RecipeListViewModel @Inject constructor(
     val query: MutableState<String> = mutableStateOf("")
     val selectedCategory: MutableState<FoodCategory?> = mutableStateOf(null)
 
+    var categoryScrollPosition: Int = 0
+
     init {
         query.value = ""
         newSearch()
@@ -47,5 +49,9 @@ class RecipeListViewModel @Inject constructor(
         selectedCategory.value = newCategory
         onQueryChanged(category)
 //        newSearch()
+    }
+
+    fun onChangeCategoryScrollPosition(position: Int) {
+        categoryScrollPosition = position
     }
 }

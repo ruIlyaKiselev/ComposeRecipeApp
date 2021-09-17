@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.composerecipeapp.domain.model.Recipe
 import com.example.composerecipeapp.repository.RecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,15 +21,20 @@ class RecipeListViewModel @Inject constructor(
 
     val recipes: MutableState<List<Recipe>> = mutableStateOf(listOf())
     val query: MutableState<String> = mutableStateOf("")
-
+    val selectedCategory: MutableState<FoodCategory?> = mutableStateOf(null)
 
     init {
-        newSearch(query.value)
+        query.value = ""
+        newSearch()
     }
 
-    fun newSearch(newQuery: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            recipes.value = repository.search(token, 1, newQuery)
+    fun newSearch() {
+        val handler = CoroutineExceptionHandler { _, exception ->
+            println("CoroutineExceptionHandler got $exception")
+        }
+
+        viewModelScope.launch(Dispatchers.IO + handler) {
+            recipes.value = repository.search(token, 1, query.value)
         }
     }
 
@@ -36,4 +42,10 @@ class RecipeListViewModel @Inject constructor(
         this.query.value = query
     }
 
+    fun onSelectedCategoryChanged(category: String) {
+        val newCategory = getFoodCategory(category)
+        selectedCategory.value = newCategory
+        onQueryChanged(category)
+//        newSearch()
+    }
 }

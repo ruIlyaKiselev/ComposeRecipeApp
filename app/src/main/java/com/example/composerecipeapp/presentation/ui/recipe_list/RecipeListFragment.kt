@@ -44,24 +44,26 @@ class RecipeListFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
+        viewModel.newSearch()
+        
         return ComposeView(requireContext()).apply {
             setContent {
 
                 val recipes = viewModel.recipes.value
-
                 val query = viewModel.query.value
+                val selectedCategory = viewModel.selectedCategory.value
 
                 ComposeRecipeAppTheme {
                     Column {
                         Column {
                             Surface(
                                 elevation = 8.dp,
-                                modifier = Modifier.fillMaxWidth(),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 8.dp, end = 8.dp),
                                 color = MaterialTheme.colors.primary
                             ) {
                                 Column {
-
-
                                     Row(
                                         modifier = Modifier.fillMaxWidth()
                                     ) {
@@ -92,7 +94,7 @@ class RecipeListFragment: Fragment() {
                                             },
                                             keyboardActions = KeyboardActions(
                                                 onSearch = {
-                                                    viewModel.newSearch(query)
+                                                    viewModel.newSearch()
                                                     clearFocus()
                                                 }
                                             ),
@@ -110,13 +112,19 @@ class RecipeListFragment: Fragment() {
                                                 state = ScrollState(0)
                                             )
                                             .fillMaxWidth()
+                                            .padding(start = 8.dp)
                                     ) {
                                         getAllFoodCategories().forEach { foodCategory ->
                                             foodCategoryChip(
                                                 category = foodCategory.value,
+                                                isSelected = selectedCategory == foodCategory,
+                                                onSelectedCategoryChanged = {
+                                                    viewModel.onSelectedCategoryChanged(
+                                                        foodCategory.value
+                                                    )
+                                                },
                                                 onExecuteSearch = {
-                                                    viewModel.onQueryChanged(it)
-                                                    viewModel.newSearch(it)
+                                                    viewModel.newSearch()
                                                 }
                                             )
                                         }

@@ -29,6 +29,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.composerecipeapp.domain.model.Recipe
 import com.example.composerecipeapp.presentation.components.RecipeCard
+import com.example.composerecipeapp.presentation.components.foodCategoryChip
 import com.example.composerecipeapp.ui.theme.ComposeRecipeAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -111,11 +112,12 @@ class RecipeListFragment: Fragment() {
                                             .fillMaxWidth()
                                     ) {
                                         getAllFoodCategories().forEach { foodCategory ->
-                                            Text(
-                                                text = foodCategory.value,
-                                                style = MaterialTheme.typography.body2,
-                                                color = MaterialTheme.colors.secondary,
-                                                modifier = Modifier.padding(8.dp)
+                                            foodCategoryChip(
+                                                category = foodCategory.value,
+                                                onExecuteSearch = {
+                                                    viewModel.onQueryChanged(it)
+                                                    viewModel.newSearch(it)
+                                                }
                                             )
                                         }
                                     }

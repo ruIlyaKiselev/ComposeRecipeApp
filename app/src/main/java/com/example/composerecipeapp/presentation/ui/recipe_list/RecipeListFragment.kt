@@ -6,10 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
@@ -29,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.composerecipeapp.domain.model.Recipe
+import com.example.composerecipeapp.presentation.components.CircularIndeterminateProgressBar
 import com.example.composerecipeapp.presentation.components.RecipeCard
 import com.example.composerecipeapp.presentation.components.SearchAppBar
 import com.example.composerecipeapp.presentation.components.foodCategoryChip
@@ -55,28 +53,39 @@ class RecipeListFragment: Fragment() {
                 val recipes = viewModel.recipes.value
                 val query = viewModel.query.value
                 val selectedCategory = viewModel.selectedCategory.value
+                val loading = viewModel.isLoading.value
 
                 ComposeRecipeAppTheme {
                     Column {
-                        Column {
-                            SearchAppBar(
-                                query = query,
-                                categoryScrollPosition = viewModel.categoryScrollPosition,
-                                selectedCategory = selectedCategory,
-                                onQueryChanged = viewModel::onQueryChanged,
-                                onSelectedCategoryChanged = viewModel::onSelectedCategoryChanged,
-                                onChangeCategoryScrollPosition = viewModel::onChangeCategoryScrollPosition,
-                                newSearch = viewModel::newSearch,
-                                clearFocus = { clearFocus() }
-                            )
-                        }
-                        LazyColumn {
-                            itemsIndexed(
-                                items = recipes
-                            ) { i: Int, recipe: Recipe ->
-                                RecipeCard(recipe = recipe, onClick = {})
+
+                        SearchAppBar(
+                            query = query,
+                            categoryScrollPosition = viewModel.categoryScrollPosition,
+                            selectedCategory = selectedCategory,
+                            onQueryChanged = viewModel::onQueryChanged,
+                            onSelectedCategoryChanged = viewModel::onSelectedCategoryChanged,
+                            onChangeCategoryScrollPosition = viewModel::onChangeCategoryScrollPosition,
+                            newSearch = viewModel::newSearch,
+                            clearFocus = { clearFocus() }
+                        )
+
+
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                        ) {
+
+                            LazyColumn {
+                                itemsIndexed(
+                                    items = recipes
+                                ) { i: Int, recipe: Recipe ->
+                                    RecipeCard(recipe = recipe, onClick = {})
+                                }
                             }
+
+                            CircularIndeterminateProgressBar(isDisplayed = loading)
                         }
+
                     }
                 }
             }

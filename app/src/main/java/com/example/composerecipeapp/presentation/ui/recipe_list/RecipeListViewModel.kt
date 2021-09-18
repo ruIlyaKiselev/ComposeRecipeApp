@@ -48,7 +48,6 @@ class RecipeListViewModel @Inject constructor(
         val newCategory = getFoodCategory(category)
         selectedCategory.value = newCategory
         onQueryChanged(category)
-//        newSearch()
     }
 
     fun onChangeCategoryScrollPosition(position: Int) {

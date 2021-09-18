@@ -25,7 +25,7 @@ fun foodCategoryChip(
             .padding(end = 8.dp, bottom = 8.dp),
         elevation = 8.dp,
         shape = MaterialTheme.shapes.medium,
-        color = if (isSelected) { MaterialTheme.colors.error } else { MaterialTheme.colors.secondary}
+        color = if (isSelected) { MaterialTheme.colors.secondary } else { MaterialTheme.colors.primary}
     ) {
         Row(
             modifier = Modifier

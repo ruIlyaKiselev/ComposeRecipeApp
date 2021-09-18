@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
@@ -31,6 +30,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.composerecipeapp.domain.model.Recipe
 import com.example.composerecipeapp.presentation.components.RecipeCard
+import com.example.composerecipeapp.presentation.components.SearchAppBar
 import com.example.composerecipeapp.presentation.components.foodCategoryChip
 import com.example.composerecipeapp.ui.theme.ComposeRecipeAppTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -59,90 +59,16 @@ class RecipeListFragment: Fragment() {
                 ComposeRecipeAppTheme {
                     Column {
                         Column {
-                            Surface(
-                                elevation = 8.dp,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = 8.dp, end = 8.dp),
-                                color = MaterialTheme.colors.primary
-                            ) {
-                                Column {
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth()
-                                    ) {
-                                        TextField(
-                                            value = query,
-                                            onValueChange = { newValue ->
-                                                viewModel.onQueryChanged(newValue)
-                                            },
-                                            modifier = Modifier
-                                                .fillMaxWidth(0.9f)
-                                                .padding(16.dp)
-                                                .background(
-                                                    color = MaterialTheme.colors.surface,
-                                                    shape = MaterialTheme.shapes.small
-                                                ),
-                                            label = {
-                                                Text(text = "Search")
-                                            },
-                                            keyboardOptions = KeyboardOptions(
-                                                keyboardType = KeyboardType.Text,
-                                                imeAction = ImeAction.Search
-                                            ),
-                                            leadingIcon = {
-                                                Icon(
-                                                    imageVector = Icons.Filled.Search,
-                                                    contentDescription = "Search icon"
-                                                )
-                                            },
-                                            keyboardActions = KeyboardActions(
-                                                onSearch = {
-                                                    viewModel.newSearch()
-                                                    clearFocus()
-                                                }
-                                            ),
-                                            textStyle = TextStyle(
-                                                color = MaterialTheme.colors.onSurface,
-                                                background = Color.Transparent
-                                            )
-                                        )
-                                    }
-
-                                    val scrollState = rememberScrollState()
-                                    val coroutineScope = rememberCoroutineScope()
-
-                                    Row(
-                                        modifier = Modifier
-                                            .horizontalScroll(
-                                                enabled = true,
-                                                state = scrollState,
-                                            )
-                                            .fillMaxWidth()
-                                            .padding(start = 8.dp),
-                                    ) {
-                                        coroutineScope.launch {
-                                            scrollState.scrollTo(viewModel.categoryScrollPosition)
-                                        }
-                                        getAllFoodCategories().forEach { foodCategory ->
-                                            foodCategoryChip(
-                                                category = foodCategory.value,
-                                                isSelected = selectedCategory == foodCategory,
-                                                onSelectedCategoryChanged = {
-                                                    viewModel.onSelectedCategoryChanged(
-                                                        foodCategory.value
-                                                    )
-                                                    viewModel.onChangeCategoryScrollPosition(
-                                                        scrollState.value
-                                                    )
-                                                },
-                                                onExecuteSearch = {
-                                                    viewModel.newSearch()
-                                                }
-                                            )
-                                        }
-                                    }
-                                }
-                            }
+                            SearchAppBar(
+                                query = query,
+                                categoryScrollPosition = viewModel.categoryScrollPosition,
+                                selectedCategory = selectedCategory,
+                                onQueryChanged = viewModel::onQueryChanged,
+                                onSelectedCategoryChanged = viewModel::onSelectedCategoryChanged,
+                                onChangeCategoryScrollPosition = viewModel::onChangeCategoryScrollPosition,
+                                newSearch = viewModel::newSearch,
+                                clearFocus = { clearFocus() }
+                            )
                         }
                         LazyColumn {
                             itemsIndexed(

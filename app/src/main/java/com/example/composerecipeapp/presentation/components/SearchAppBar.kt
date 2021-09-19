@@ -1,5 +1,6 @@
 package com.example.composerecipeapp.presentation.components
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
@@ -24,6 +25,7 @@ import com.example.composerecipeapp.presentation.ui.recipe_list.FoodCategory
 import com.example.composerecipeapp.presentation.ui.recipe_list.getAllFoodCategories
 import kotlinx.coroutines.launch
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun SearchAppBar(
     query: String,

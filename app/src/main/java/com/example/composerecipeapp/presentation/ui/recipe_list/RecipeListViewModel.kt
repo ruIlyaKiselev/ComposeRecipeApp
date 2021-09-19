@@ -24,6 +24,7 @@ class RecipeListViewModel @Inject constructor(
     val query: MutableState<String> = mutableStateOf("")
     val selectedCategory: MutableState<FoodCategory?> = mutableStateOf(null)
     val isLoading: MutableState<Boolean> = mutableStateOf(false)
+    val isLiked: MutableState<Boolean> = mutableStateOf(false)
 
     var categoryScrollPosition: Int = 0
 
@@ -69,5 +70,9 @@ class RecipeListViewModel @Inject constructor(
         if (query.value != selectedCategory.value?.value) {
             clearSelectedCategory()
         }
+    }
+
+    public fun onClickLike() {
+        isLiked.value = !isLiked.value
     }
 }

@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -26,10 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.composerecipeapp.domain.model.Recipe
-import com.example.composerecipeapp.presentation.components.CircularIndeterminateProgressBar
-import com.example.composerecipeapp.presentation.components.RecipeCard
-import com.example.composerecipeapp.presentation.components.SearchAppBar
-import com.example.composerecipeapp.presentation.components.foodCategoryChip
+import com.example.composerecipeapp.presentation.components.*
 import com.example.composerecipeapp.ui.theme.ComposeRecipeAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -39,6 +38,7 @@ class RecipeListFragment: Fragment() {
 
     private val viewModel: RecipeListViewModel by viewModels()
 
+    @ExperimentalAnimationApi
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -85,7 +85,6 @@ class RecipeListFragment: Fragment() {
 
                             CircularIndeterminateProgressBar(isDisplayed = loading)
                         }
-
                     }
                 }
             }

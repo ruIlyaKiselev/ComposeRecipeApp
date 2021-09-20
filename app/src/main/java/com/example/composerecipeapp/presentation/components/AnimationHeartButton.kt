@@ -1,12 +1,14 @@
 package com.example.composerecipeapp.presentation.components
 
 import android.view.MotionEvent
-import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -23,8 +25,21 @@ fun AnimatedHeartButton(
     isLiked: Boolean,
     onClick: () -> Unit
 ) {
-    val scale = animateFloatAsState(if (isLiked) 1.2f else 1f)
-    val color = if (isLiked) Red else Gray
+    val scale = animateFloatAsState(
+        targetValue = if (isLiked) 1.0001f else 1f,
+        animationSpec = keyframes {
+            durationMillis = 350
+            1f at 70 with LinearOutSlowInEasing
+            1.25f at 140 with FastOutLinearInEasing
+            0.8f at 210 with FastOutSlowInEasing
+            1.1f at 280 with FastOutLinearInEasing
+        }
+    )
+
+    val color by animateColorAsState(
+        targetValue = if (isLiked)  Red  else Gray,
+        animationSpec = tween(durationMillis = 100, easing = LinearEasing)
+    )
 
     Column(
         Modifier
@@ -36,8 +51,8 @@ fun AnimatedHeartButton(
         Image(
             modifier = Modifier
                 .scale(scale.value)
-                .width(50.dp)
-                .height(50.dp)
+                .width(25.dp)
+                .height(25.dp)
                 .pointerInteropFilter {
                     when (it.action) {
                         MotionEvent.ACTION_DOWN -> {

@@ -26,7 +26,6 @@ class RecipeListFragment: Fragment() {
 
     private val viewModel: RecipeListViewModel by viewModels()
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -62,18 +61,24 @@ class RecipeListFragment: Fragment() {
                             clearFocus = { clearFocus() }
                         )
 
-                        ShimmerAnimation()
-
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
                         ) {
 
-                            LazyColumn {
-                                itemsIndexed(
-                                    items = recipes
-                                ) { i: Int, recipe: Recipe ->
-                                    RecipeCard(recipe = recipe, onClick = {})
+                            if (loading) {
+                                LazyColumn {
+                                    items(5) {
+                                        ShimmerAnimation()
+                                    }
+                                }
+                            } else {
+                                LazyColumn {
+                                    itemsIndexed(
+                                        items = recipes
+                                    ) { i: Int, recipe: Recipe ->
+                                        RecipeCard(recipe = recipe, onClick = {})
+                                    }
                                 }
                             }
 

@@ -4,25 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush.Companion.linearGradient
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.LinearGradient
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.composerecipeapp.domain.model.Recipe
-import com.example.composerecipeapp.presentation.components.*
+import com.example.composerecipeapp.presentation.components.CircularIndeterminateProgressBar
+import com.example.composerecipeapp.presentation.components.RecipeCard
+import com.example.composerecipeapp.presentation.components.SearchAppBar
+import com.example.composerecipeapp.presentation.components.placeholders.ShimmerAnimation
 import com.example.composerecipeapp.ui.theme.ComposeRecipeAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,7 +26,7 @@ class RecipeListFragment: Fragment() {
 
     private val viewModel: RecipeListViewModel by viewModels()
 
-    @ExperimentalComposeUiApi
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

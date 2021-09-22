@@ -1,4 +1,4 @@
-package com.example.composerecipeapp.presentation.components
+package com.example.composerecipeapp.presentation.components.placeholders
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

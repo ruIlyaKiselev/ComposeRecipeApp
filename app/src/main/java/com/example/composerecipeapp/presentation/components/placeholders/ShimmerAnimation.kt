@@ -1,4 +1,4 @@
-package com.example.composerecipeapp.presentation.components
+package com.example.composerecipeapp.presentation.components.placeholders
 
 import androidx.compose.animation.core.*
 import androidx.compose.runtime.Composable

@@ -1,9 +1,9 @@
 package com.example.composerecipeapp.presentation.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.toggleable
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun foodCategoryChip(
+fun FoodCategoryChip(
     category: String,
     isSelected: Boolean = false,
     onSelectedCategoryChanged: (String) -> Unit,
@@ -23,9 +23,12 @@ fun foodCategoryChip(
     Surface(
         modifier = Modifier
             .padding(end = 8.dp, bottom = 8.dp),
-        elevation = 8.dp,
-        shape = MaterialTheme.shapes.medium,
-        color = if (isSelected) { MaterialTheme.colors.secondary } else { MaterialTheme.colors.primary}
+        shape = RoundedCornerShape(20.dp),
+        color = if (isSelected) {
+            MaterialTheme.colors.secondary
+        } else {
+            MaterialTheme.colors.background
+        }
     ) {
         Row(
             modifier = Modifier
@@ -40,7 +43,7 @@ fun foodCategoryChip(
             Text(
                 text = category,
                 style = MaterialTheme.typography.body2,
-                color = MaterialTheme.colors.onSurface,
+                color = Color.White,
                 modifier = Modifier.padding(8.dp)
             )
         }

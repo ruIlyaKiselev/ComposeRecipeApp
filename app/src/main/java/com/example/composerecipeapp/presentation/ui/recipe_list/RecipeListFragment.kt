@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,16 +15,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.composerecipeapp.BaseApplication
 import com.example.composerecipeapp.domain.model.Recipe
 import com.example.composerecipeapp.presentation.components.CircularIndeterminateProgressBar
 import com.example.composerecipeapp.presentation.components.RecipeCard
 import com.example.composerecipeapp.presentation.components.SearchAppBar
 import com.example.composerecipeapp.presentation.components.placeholders.ShimmerAnimation
-import com.example.composerecipeapp.ui.theme.ComposeRecipeAppTheme
+import com.example.composerecipeapp.presentation.theme.ComposeRecipeAppTheme
+import com.example.composerecipeapp.presentation.theme.*
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class RecipeListFragment: Fragment() {
+
+    @Inject
+    lateinit var baseApplication: BaseApplication
 
     private val viewModel: RecipeListViewModel by viewModels()
 
@@ -42,14 +50,13 @@ class RecipeListFragment: Fragment() {
                 val selectedCategory = viewModel.selectedCategory.value
                 val loading = viewModel.isLoading.value
 
-                ComposeRecipeAppTheme {
-                    Column {
-
-//                        AnimatedHeartButton(
-//                            viewModel.isLiked.value,
-//                            viewModel::onClickLike
-//                        )
-
+                ComposeRecipeAppTheme (
+                    darkTheme = baseApplication.isDarkTheme.value
+                ) {
+                    Column (
+                        modifier = Modifier
+                            .background(if (baseApplication.isDarkTheme.value) BackgroundDark else BackgroundLight)
+                    ) {
                         SearchAppBar(
                             query = query,
                             categoryScrollPosition = viewModel.categoryScrollPosition,
@@ -58,7 +65,8 @@ class RecipeListFragment: Fragment() {
                             onSelectedCategoryChanged = viewModel::onSelectedCategoryChanged,
                             onChangeCategoryScrollPosition = viewModel::onChangeCategoryScrollPosition,
                             newSearch = viewModel::newSearch,
-                            clearFocus = { clearFocus() }
+                            clearFocus = { clearFocus() },
+                            onToggleTheme = { baseApplication.toggleDarkTheme() }
                         )
 
                         Box(

@@ -27,7 +27,6 @@ class RecipeListViewModel @Inject constructor(
     val query: MutableState<String> = mutableStateOf("")
     val selectedCategory: MutableState<FoodCategory?> = mutableStateOf(null)
     val isLoading: MutableState<Boolean> = mutableStateOf(false)
-    val isLiked: MutableState<Boolean> = mutableStateOf(false)
     val page = mutableStateOf(1)
 
     var recipeListScrollPosition = 0
@@ -57,10 +56,6 @@ class RecipeListViewModel @Inject constructor(
 
     //    use case #1
     private suspend fun newSearch() {
-        val handler = CoroutineExceptionHandler { _, exception ->
-            println("CoroutineExceptionHandler got $exception")
-        }
-
         isLoading.value = true
         resetSearchState()
         recipes.value = repository.search(token, 1, query.value)
@@ -69,10 +64,6 @@ class RecipeListViewModel @Inject constructor(
 
     //    use case #2
     private suspend fun nextPage() {
-        val handler = CoroutineExceptionHandler { _, exception ->
-            println("CoroutineExceptionHandler got $exception")
-        }
-
         if (recipeListScrollPosition + 1 >= page.value * ApiContract.PAGE_SIZE) {
             isLoading.value = true
             incrementPage()
@@ -138,9 +129,4 @@ class RecipeListViewModel @Inject constructor(
         page.value = page.value + 1
     }
 
-
-
-    public fun onClickLike() {
-        isLiked.value = !isLiked.value
-    }
 }

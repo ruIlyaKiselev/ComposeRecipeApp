@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,12 +16,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.composerecipeapp.BaseApplication
 import com.example.composerecipeapp.domain.model.Recipe
+import com.example.composerecipeapp.network.ApiContract
 import com.example.composerecipeapp.presentation.components.CircularIndeterminateProgressBar
 import com.example.composerecipeapp.presentation.components.RecipeCard
 import com.example.composerecipeapp.presentation.components.SearchAppBar
 import com.example.composerecipeapp.presentation.components.placeholders.ShimmerAnimation
+import com.example.composerecipeapp.presentation.theme.BackgroundDark
+import com.example.composerecipeapp.presentation.theme.BackgroundLight
 import com.example.composerecipeapp.presentation.theme.ComposeRecipeAppTheme
-import com.example.composerecipeapp.presentation.theme.*
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -49,6 +50,7 @@ class RecipeListFragment: Fragment() {
                 val query = viewModel.query.value
                 val selectedCategory = viewModel.selectedCategory.value
                 val loading = viewModel.isLoading.value
+                val page = viewModel.page.value
 
                 ComposeRecipeAppTheme (
                     darkTheme = baseApplication.isDarkTheme.value
@@ -74,7 +76,7 @@ class RecipeListFragment: Fragment() {
                                 .fillMaxSize()
                         ) {
 
-                            if (loading) {
+                            if (loading && recipes.isEmpty()) {
                                 LazyColumn {
                                     items(5) {
                                         ShimmerAnimation()
@@ -84,7 +86,12 @@ class RecipeListFragment: Fragment() {
                                 LazyColumn {
                                     itemsIndexed(
                                         items = recipes
-                                    ) { i: Int, recipe: Recipe ->
+                                    ) { index: Int, recipe: Recipe ->
+                                        viewModel.onChangeRecipeScrollPosition(index)
+                                        if (index + 1 >= page * ApiContract.PAGE_SIZE - 5 && !loading) {
+                                            viewModel.nextPage()
+                                        }
+
                                         RecipeCard(recipe = recipe, onClick = {})
                                     }
                                 }

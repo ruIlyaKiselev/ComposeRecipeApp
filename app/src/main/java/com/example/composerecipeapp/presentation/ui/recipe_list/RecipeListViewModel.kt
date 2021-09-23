@@ -13,7 +13,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.ArrayList
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -35,45 +35,63 @@ class RecipeListViewModel @Inject constructor(
 
     init {
         query.value = ""
-        newSearch()
+        onTriggerEvent(RecipeListEvent.NewSearchEvent)
     }
 
-    fun newSearch() {
+    fun onTriggerEvent(event: RecipeListEvent) {
         val handler = CoroutineExceptionHandler { _, exception ->
             println("CoroutineExceptionHandler got $exception")
         }
 
-        viewModelScope.launch(Dispatchers.IO + handler) {
-            isLoading.value = true
-            resetSearchState()
-            recipes.value = repository.search(token, 1, query.value)
-            isLoading.value = false
+        viewModelScope.launch(handler + Dispatchers.IO) {
+            when(event) {
+                is RecipeListEvent.NewSearchEvent -> {
+                    newSearch()
+                }
+                is RecipeListEvent.NextPageEvent -> {
+                    nextPage()
+                }
+            }
         }
     }
 
-    fun nextPage() {
-        viewModelScope.launch {
+    //    use case #1
+    private suspend fun newSearch() {
+        val handler = CoroutineExceptionHandler { _, exception ->
+            println("CoroutineExceptionHandler got $exception")
+        }
 
-            if (recipeListScrollPosition + 1 >= page.value * ApiContract.PAGE_SIZE) {
-                isLoading.value = true
-                incrementPage()
-                Log.d("MyLog", "Next Page triggered: ${page.value}")
+        isLoading.value = true
+        resetSearchState()
+        recipes.value = repository.search(token, 1, query.value)
+        isLoading.value = false
+    }
 
-                delay(1000)
+    //    use case #2
+    private suspend fun nextPage() {
+        val handler = CoroutineExceptionHandler { _, exception ->
+            println("CoroutineExceptionHandler got $exception")
+        }
 
-                if (page.value > 1) {
-                    val result = repository.search(
-                        token = ApiContract.TOKEN,
-                        page = page.value,
-                        query = query.value
-                    )
+        if (recipeListScrollPosition + 1 >= page.value * ApiContract.PAGE_SIZE) {
+            isLoading.value = true
+            incrementPage()
+            Log.d("MyLog", "Next Page triggered: ${page.value}")
 
-                    Log.d("MyLog", "Next Page: $result")
-                    appendRecipes(result)
-                }
+            delay(1000)
 
-                isLoading.value = false
+            if (page.value > 1) {
+                val result = repository.search(
+                    token = ApiContract.TOKEN,
+                    page = page.value,
+                    query = query.value
+                )
+
+                Log.d("MyLog", "Next Page: $result")
+                appendRecipes(result)
             }
+
+            isLoading.value = false
         }
     }
 

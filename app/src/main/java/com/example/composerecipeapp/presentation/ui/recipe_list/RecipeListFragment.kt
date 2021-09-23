@@ -41,7 +41,7 @@ class RecipeListFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        viewModel.newSearch()
+        viewModel.onTriggerEvent(RecipeListEvent.NewSearchEvent)
 
         return ComposeView(requireContext()).apply {
             setContent {
@@ -66,7 +66,7 @@ class RecipeListFragment: Fragment() {
                             onQueryChanged = viewModel::onQueryChanged,
                             onSelectedCategoryChanged = viewModel::onSelectedCategoryChanged,
                             onChangeCategoryScrollPosition = viewModel::onChangeCategoryScrollPosition,
-                            newSearch = viewModel::newSearch,
+                            newSearch = { viewModel.onTriggerEvent(RecipeListEvent.NewSearchEvent) },
                             clearFocus = { clearFocus() },
                             onToggleTheme = { baseApplication.toggleDarkTheme() }
                         )
@@ -89,7 +89,7 @@ class RecipeListFragment: Fragment() {
                                     ) { index: Int, recipe: Recipe ->
                                         viewModel.onChangeRecipeScrollPosition(index)
                                         if (index + 1 >= page * ApiContract.PAGE_SIZE - 5 && !loading) {
-                                            viewModel.nextPage()
+                                            viewModel.onTriggerEvent(RecipeListEvent.NextPageEvent)
                                         }
 
                                         RecipeCard(recipe = recipe, onClick = {})

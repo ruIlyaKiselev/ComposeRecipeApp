@@ -13,15 +13,22 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
+import com.example.composerecipeapp.presentation.ui.RecipeNamingContract
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class RecipeFragment: Fragment() {
+
+    private var recipeId: Int? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        recipeId = arguments?.getInt(RecipeNamingContract.RECIPE_ID)
+
         return ComposeView(requireContext()).apply {
             setContent {
                 Column(
@@ -29,7 +36,7 @@ class RecipeFragment: Fragment() {
                         .padding(16.dp)
                 ) {
                     Text(
-                        text = "Recipe Fragment",
+                        text = "Recipe Fragment (id = $recipeId)",
                         color = Color.Red,
                         fontSize = 42.sp
                     )

@@ -8,8 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.composerecipeapp.domain.model.Recipe
 import com.example.composerecipeapp.network.ApiContract
+import com.example.composerecipeapp.presentation.ui.RecipeNamingContract
 import com.example.composerecipeapp.repository.RecipeRepository
-import dagger.assisted.Assisted
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
@@ -36,19 +36,19 @@ class RecipeListViewModel @Inject constructor(
     var categoryScrollPosition: Int = 0
 
     init {
-        savedStateHandle.get<Int>(SavedStateContract.STATE_KEY_PAGE)?.let {
+        savedStateHandle.get<Int>(RecipeNamingContract.STATE_KEY_PAGE)?.let {
             setPage(it)
         }
-        savedStateHandle.get<String>(SavedStateContract.STATE_KEY_QUERY)?.let {
+        savedStateHandle.get<String>(RecipeNamingContract.STATE_KEY_QUERY)?.let {
             setQuery(it)
         }
-        savedStateHandle.get<Int>(SavedStateContract.STATE_KEY_LIST_POSITION)?.let {
+        savedStateHandle.get<Int>(RecipeNamingContract.STATE_KEY_LIST_POSITION)?.let {
             setListScrollPosition(it)
         }
-        savedStateHandle.get<Int>(SavedStateContract.STATE_KEY_SELECTED_CATEGORY_POSITION)?.let {
+        savedStateHandle.get<Int>(RecipeNamingContract.STATE_KEY_SELECTED_CATEGORY_POSITION)?.let {
             setSelectedCategoryScrollPosition(it)
         }
-        savedStateHandle.get<FoodCategory>(SavedStateContract.STATE_KEY_SELECTED_CATEGORY)?.let {
+        savedStateHandle.get<FoodCategory>(RecipeNamingContract.STATE_KEY_SELECTED_CATEGORY)?.let {
             setSelectedCategory(it)
         }
 
@@ -174,26 +174,26 @@ class RecipeListViewModel @Inject constructor(
 
     private fun setListScrollPosition(position: Int) {
         recipeListScrollPosition = position
-        savedStateHandle.set(SavedStateContract.STATE_KEY_LIST_POSITION, position)
+        savedStateHandle.set(RecipeNamingContract.STATE_KEY_LIST_POSITION, position)
     }
 
     private fun setSelectedCategoryScrollPosition(position: Int) {
         categoryScrollPosition = position
-        savedStateHandle.set(SavedStateContract.STATE_KEY_SELECTED_CATEGORY_POSITION, position)
+        savedStateHandle.set(RecipeNamingContract.STATE_KEY_SELECTED_CATEGORY_POSITION, position)
     }
 
     private fun setPage(page: Int) {
         this.page.value = page
-        savedStateHandle.set(SavedStateContract.STATE_KEY_PAGE, page)
+        savedStateHandle.set(RecipeNamingContract.STATE_KEY_PAGE, page)
     }
 
     private fun setQuery(query: String) {
         this.query.value = query
-        savedStateHandle.set(SavedStateContract.STATE_KEY_QUERY, query)
+        savedStateHandle.set(RecipeNamingContract.STATE_KEY_QUERY, query)
     }
 
     private fun setSelectedCategory(selectedCategory: FoodCategory) {
         this.selectedCategory.value = selectedCategory
-        savedStateHandle.set(SavedStateContract.STATE_KEY_SELECTED_CATEGORY, selectedCategory)
+        savedStateHandle.set(RecipeNamingContract.STATE_KEY_SELECTED_CATEGORY, selectedCategory)
     }
 }

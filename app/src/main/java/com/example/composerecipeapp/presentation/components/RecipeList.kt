@@ -11,7 +11,7 @@ import androidx.navigation.NavController
 import com.example.composerecipeapp.R
 import com.example.composerecipeapp.domain.model.Recipe
 import com.example.composerecipeapp.network.ApiContract
-import com.example.composerecipeapp.presentation.components.placeholders.ShimmerAnimation
+import com.example.composerecipeapp.presentation.components.placeholders.ShimmerAnimationRecipeList
 import com.example.composerecipeapp.presentation.ui.RecipeNamingContract
 
 @Composable
@@ -34,7 +34,7 @@ fun RecipeList(
         if (loading && recipes.isEmpty()) {
             LazyColumn {
                 items(5) {
-                    ShimmerAnimation()
+                    ShimmerAnimationRecipeList()
                 }
             }
         } else {

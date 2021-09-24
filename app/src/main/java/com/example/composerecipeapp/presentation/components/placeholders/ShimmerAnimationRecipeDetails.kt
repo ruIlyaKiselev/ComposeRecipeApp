@@ -8,7 +8,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 @Composable
-fun ShimmerAnimation(
+fun ShimmerAnimationRecipeDetails(
 ) {
 
     /*
@@ -52,5 +52,5 @@ fun ShimmerAnimation(
         end = Offset(translateAnim, translateAnim)
     )
 
-    ShimmerItemRecipeList(brush = brush)
+    ShimmerItemRecipeDetails(brush = brush)
 }

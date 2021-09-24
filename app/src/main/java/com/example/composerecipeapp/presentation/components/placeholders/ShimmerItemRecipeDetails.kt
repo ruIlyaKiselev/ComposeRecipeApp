@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ShimmerItemRecipeList(
+fun ShimmerItemRecipeDetails(
     brush: Brush
 ) {
     // Column composable comtaining spacer shaped like a rectangle,
@@ -43,6 +43,20 @@ fun ShimmerItemRecipeList(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(80.dp)
+                    .background(brush = brush)
+            )
+        }
+
+        Card (
+            shape = MaterialTheme.shapes.small,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
+            elevation = 8.dp
+        ) {
+            Spacer(
+                modifier = Modifier
+                    .fillMaxSize()
                     .background(brush = brush)
             )
         }

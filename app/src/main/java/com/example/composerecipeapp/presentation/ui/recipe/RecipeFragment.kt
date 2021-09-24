@@ -4,36 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.selection.toggleable
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.ui.Alignment
+import androidx.compose.foundation.layout.Column
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.example.composerecipeapp.BaseApplication
-import com.example.composerecipeapp.R
 import com.example.composerecipeapp.presentation.components.CircularIndeterminateProgressBar
 import com.example.composerecipeapp.presentation.components.RecipeView
-import com.example.composerecipeapp.presentation.components.placeholders.ShimmerItemRecipeDetails
+import com.example.composerecipeapp.presentation.components.placeholders.ShimmerAnimationRecipeDetails
 import com.example.composerecipeapp.presentation.theme.BackgroundDark
 import com.example.composerecipeapp.presentation.theme.BackgroundLight
 import com.example.composerecipeapp.presentation.theme.ComposeRecipeAppTheme
 import com.example.composerecipeapp.presentation.ui.RecipeNamingContract
-import com.example.composerecipeapp.utils.loadPicture
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -73,7 +58,7 @@ class RecipeFragment: Fragment() {
                     ) {
 
                         if (loading) {
-                            ShimmerItemRecipeDetails()
+                            ShimmerAnimationRecipeDetails()
                         } else {
                             RecipeView(recipe = recipe, navController = findNavController())
                         }

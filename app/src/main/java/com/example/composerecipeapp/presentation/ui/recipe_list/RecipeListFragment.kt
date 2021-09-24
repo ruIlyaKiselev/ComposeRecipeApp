@@ -5,22 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.composerecipeapp.BaseApplication
-import com.example.composerecipeapp.domain.model.Recipe
-import com.example.composerecipeapp.network.ApiContract
-import com.example.composerecipeapp.presentation.components.CircularIndeterminateProgressBar
-import com.example.composerecipeapp.presentation.components.RecipeCard
+import com.example.composerecipeapp.presentation.components.RecipeList
 import com.example.composerecipeapp.presentation.components.SearchAppBar
-import com.example.composerecipeapp.presentation.components.placeholders.ShimmerAnimation
 import com.example.composerecipeapp.presentation.theme.BackgroundDark
 import com.example.composerecipeapp.presentation.theme.BackgroundLight
 import com.example.composerecipeapp.presentation.theme.ComposeRecipeAppTheme
@@ -52,10 +44,10 @@ class RecipeListFragment: Fragment() {
                 val loading = viewModel.isLoading.value
                 val page = viewModel.page.value
 
-                ComposeRecipeAppTheme (
+                ComposeRecipeAppTheme(
                     darkTheme = baseApplication.isDarkTheme.value
                 ) {
-                    Column (
+                    Column(
                         modifier = Modifier
                             .background(if (baseApplication.isDarkTheme.value) BackgroundDark else BackgroundLight)
                     ) {
@@ -71,34 +63,13 @@ class RecipeListFragment: Fragment() {
                             onToggleTheme = { baseApplication.toggleDarkTheme() }
                         )
 
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                        ) {
-
-                            if (loading && recipes.isEmpty()) {
-                                LazyColumn {
-                                    items(5) {
-                                        ShimmerAnimation()
-                                    }
-                                }
-                            } else {
-                                LazyColumn {
-                                    itemsIndexed(
-                                        items = recipes
-                                    ) { index: Int, recipe: Recipe ->
-                                        viewModel.onChangeRecipeScrollPosition(index)
-                                        if (index + 1 >= page * ApiContract.PAGE_SIZE - 5 && !loading) {
-                                            viewModel.onTriggerEvent(RecipeListEvent.NextPageEvent)
-                                        }
-
-                                        RecipeCard(recipe = recipe, onClick = {})
-                                    }
-                                }
-                            }
-
-                            CircularIndeterminateProgressBar(isDisplayed = loading)
-                        }
+                        RecipeList(
+                            loading = loading,
+                            recipes = recipes,
+                            page = page,
+                            onChangeScrollPosition = viewModel::onChangeRecipeScrollPosition,
+                            nextPage = { viewModel.onTriggerEvent(RecipeListEvent.NextPageEvent) }
+                        )
                     }
                 }
             }

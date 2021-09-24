@@ -52,8 +52,6 @@ class RecipeViewModel @Inject constructor(
     private suspend fun getRecipe(recipeId: Int) {
         loading.value = true
 
-        delay(1000)
-
         val recipeFromRepository = repository.get(
             token = token,
             id = recipeId

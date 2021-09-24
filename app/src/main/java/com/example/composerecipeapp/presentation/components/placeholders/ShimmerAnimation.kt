@@ -52,5 +52,5 @@ fun ShimmerAnimation(
         end = Offset(translateAnim, translateAnim)
     )
 
-    ShimmerItem(brush = brush)
+    ShimmerItemRecipeList(brush = brush)
 }
